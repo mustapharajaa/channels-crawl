@@ -9,9 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "googleapis": "^170.1.0",
-    "node-cron": "^4.2.1",
-    "puppeteer": "^24.35.0"
-  }
+  "googleapis": "^170.1.0",
+  "node-cron": "^4.2.1",
+  "puppeteer": "^24.35.0",
+  "puppeteer-extra": "^3.3.6",
+  "puppeteer-extra-plugin-stealth": "^2.11.2"
+}
 }
