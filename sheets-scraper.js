@@ -40,10 +40,31 @@ async function scrapeChannel(browser, channelUrl) {
             timeout: 60000
         });
 
-        // Wait for the page to load
-        await sleep(5000); // Wait 5 seconds for page to fully load
+        // Check for and handle Cookie Consent Popup (Common on VPS IPs)
+        try {
+            const consentButton = await page.$('button[aria-label="Accept all"]');
+            if (consentButton) {
+                console.log('🍪 Found consent popup, clicking "Accept all"...');
+                await consentButton.click();
+                await sleep(3000); // Wait for popup to clear
+            }
+        } catch (e) {
+            // Ignore if no consent popup
+        }
+
+        // Wait for key elements to ensure page is loaded
+        try {
+            await page.waitForSelector('ytd-channel-name', { timeout: 10000 });
+        } catch (e) {
+            console.log('⚠️ Could not find channel name element - taking debug screenshot...');
+            await page.screenshot({ path: path.join(__dirname, 'debug-error.png') });
+        }
+
+        // Wait a bit more for dynamic content
+        await sleep(5000);
 
         // Extract channel name
+
         const channelName = await page.evaluate(() => {
             const nameElement = document.querySelector('yt-formatted-string.ytd-channel-name');
             return nameElement ? nameElement.textContent.trim() : 'Unknown';
@@ -85,6 +106,13 @@ async function scrapeChannel(browser, channelUrl) {
 
     } catch (error) {
         console.error(`❌ Error scraping ${channelUrl}:`, error.message);
+
+        // Take screenshot on error too
+        try {
+            await page.screenshot({ path: path.join(__dirname, 'debug-crash.png') });
+            console.log('📸 Saved debug-crash.png');
+        } catch (e) { }
+
         return {
             channelUrl,
             channelName: 'Error',
