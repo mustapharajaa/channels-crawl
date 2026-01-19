@@ -1,4 +1,6 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+puppeteer.use(StealthPlugin());
 const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
@@ -209,6 +211,10 @@ async function runScraper() {
         return;
     }
 
+
+
+    // ... existing code ...
+
     // Launch browser
     const browser = await puppeteer.launch({
         // Auto-detect: Headless on Linux (VPS), Visible on Windows
@@ -222,6 +228,23 @@ async function runScraper() {
         timeout: 60000,
         ignoreDefaultArgs: ['--enable-automation']
     });
+
+    const page = await browser.newPage();
+
+    // Load cookies if they exist
+    const cookiesPath = path.join(__dirname, 'cookies.json');
+    if (fs.existsSync(cookiesPath)) {
+        try {
+            const cookiesString = fs.readFileSync(cookiesPath);
+            const cookies = JSON.parse(cookiesString);
+            await page.setCookie(...cookies);
+            console.log('🍪 Loaded cookies from cookies.json');
+        } catch (error) {
+            console.error('⚠️ Error loading cookies:', error.message);
+        }
+    }
+
+    await page.close(); // Close the initial page we opened just to set cookies
 
     const results = [];
 

@@ -37,6 +37,7 @@ sudo apt-get install -y ca-certificates fonts-liberation libasound2 \
 # 4. Install Project Dependencies
 echo "📦 Installing NPM dependencies..."
 npm install
+npm install puppeteer-extra puppeteer-extra-plugin-stealth
 
 # 5. Install PM2 globally for 24/7 execution
 if ! command -v pm2 &> /dev/null; then
