@@ -211,7 +211,8 @@ async function runScraper() {
 
     // Launch browser
     const browser = await puppeteer.launch({
-        headless: false,  // Set to false to see the browser
+        // Auto-detect: Headless on Linux (VPS), Visible on Windows
+        headless: process.platform === 'linux' ? 'new' : false,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',

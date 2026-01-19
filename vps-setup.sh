@@ -62,8 +62,9 @@ echo "
 ✅ Setup Complete!
 -----------------------------------------------------
 The scraper is now running in the background.
-View logs:    pm2 logs yt-scraper
-Check status: pm2 status
-Stop scraper: pm2 stop yt-scraper
+View logs:       pm2 logs yt-scraper
+Check status:    pm2 status
+Restart scraper: pm2 restart yt-scraper
+Stop scraper:    pm2 stop yt-scraper
 -----------------------------------------------------
 "
