@@ -313,23 +313,27 @@ function main() {
     console.log('👉 Press Ctrl+C to stop the application');
     console.log('─'.repeat(80));
 
-    // Run immediately on startup
+    // Run immediately on startup (For testing/confirmation)
+    console.log('🚀 Initiating Startup Run (Verification)...');
     runScraper().catch(console.error);
 
     // Schedule to check every day at midnight (0 0 * * *)
-    // But then wait a random amount of time (0-24 hours) before actually running
+    // Then wait a random delay (0-23 hours) to spread scrapes across the day
     cron.schedule('0 0 * * *', () => {
         const randomDelayHours = Math.random() * 24;
         const randomDelayMs = Math.floor(randomDelayHours * 60 * 60 * 1000);
 
         const nextRunTime = new Date(Date.now() + randomDelayMs);
+        const targetDate = new Date().toLocaleDateString();
 
-        console.log(`\n🎲 Daily Schedule Triggered: Randomizing start time...`);
+        console.log(`\n🎲 Daily Schedule Triggered for Date: ${targetDate}`);
+        console.log(`⏳ Randomizing start time (Window: 0-24h)`);
         console.log(`⏳ Waiting ${randomDelayHours.toFixed(2)} hours`);
         console.log(`📅 Next scrape will run at: ${nextRunTime.toLocaleString()}`);
         console.log('─'.repeat(80));
 
         setTimeout(() => {
+            console.log(`\n⏰ Executing Randomized Run for ${targetDate}`);
             runScraper().catch(console.error);
         }, randomDelayMs);
     });
