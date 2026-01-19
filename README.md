@@ -42,13 +42,21 @@ Since `credentials.json` is secret, it's not on GitHub. You must create it manua
     nano credentials.json
     ```
 3.  **Paste** the text (Right-click usually pastes).
-4.  **Save & Exit**:
-    - Press `Ctrl + X`
-    - Press `Y`
-    - Press `Enter`
+4.  **Save & Exit**: `Ctrl + X` → `Y` → `Enter`.
 
-### 4. Restart the Scraper
-Once the credentials are saved, restart the scraper to pick them up:
+### 4. Setup Cookies (Optional - For Stealth)
+To avoid detection, you can add your YouTube cookies.
+
+1.  **Get Cookies**: Use a browser extension like "EditThisCookie" to export your YouTube cookies as JSON.
+2.  **On the VPS**:
+    ```bash
+    nano cookies.json
+    ```
+3.  **Paste** the JSON content.
+4.  **Save & Exit**: `Ctrl + X` → `Y` → `Enter`.
+
+### 5. Restart the Scraper
+Once credentials/cookies are ready:
 ```bash
 pm2 restart yt-scraper
 ```
